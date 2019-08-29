@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="orderGoods">
+<resultMap type="kr.co.bookking.VO.OrderGoodsVO" id="orderGoodsMap">
+	<result column="ORDER_ID" property="orderId"/>
+	<result column="ORDER_GOODS_SEQ" property="orderGoodsSeq"/>
+	<result column="ORDER_GOODS_ID" property="orderGoodsId"/>
+	<result column="ORDER_GOODS_STOCK" property="orderGoodsStock"/>
+	<result column="ORDER_GOODS_PRICE" property="orderGoodsPrice"/>
+</resultMap>
+	<insert id="createOrder" parameterType="kr.co.bookking.VO.OrderGoodsVO">
+		INSERT INTO BK_ORDER_GOODS (ORDER_ID, ORDER_GOODS_SEQ, ORDER_GOODS_ID, ORDER_GOODS_STOCK, ORDER_GOODS_PRICE)
+		VALUES(ORDER_ID_SEQ.CURRVAL, order_Goods_SEQ_SEQ.NEXTVAL, #{orderGoodsId}, #{orderGoodsStock}, #{orderGoodsPrice})
+	</insert>
+	
+	<select id="getOrderGoodsList" parameterType="int" resultMap="orderGoodsMap">
+		SELECT ORDER_ID, ORDER_GOODS_SEQ, ORDER_GOODS_ID, ORDER_GOODS_STOCK, ORDER_GOODS_PRICE
+		FROM BK_ORDER_GOODS
+		WHERE ORDER_ID = #{orderId}
+	</select>
+	
+	<select id="getGoodsList" resultType="java.util.Map" parameterType="int">
+		SELECT BO.ORDER_ID as ORDER_ID
+		          ,BO.ORDER_GOODS_STOCK as ORDER_GOODS_STOCK
+		          ,BO.ORDER_GOODS_ID as ORDER_GOODS_ID
+		          ,BO.ORDER_GOODS_PRICE as ORDER_GOODS_PRICE
+		          ,BB.BOOK_NAME as BOOK_NAME
+<!-- 		          ,TO_NUMBER(DATE_FORMAT(BB.BOOK_PRICE,'999,999')) as BOOK_PRICE -->
+<!-- 		          ,TO_NUMBER(BB.BOOK_PRICE,'999,999') as BOOK_PRICE -->
+ 		          ,BB.BOOK_PRICE as BOOK_PRICE
+		          ,BB.BOOK_LIST_IMAGE as BOOK_LIST_IMAGE
+		          ,BB.BOOK_WRITER as BOOK_WRITER
+		  FROM BK_ORDER_GOODS BO, BK_BOOK BB
+		WHERE BO.ORDER_GOODS_ID = BB.BOOK_ID
+		    AND BO.ORDER_ID = #{orderId}
+		ORDER BY BO.ORDER_ID DESC
+	</select>
+</mapper> 

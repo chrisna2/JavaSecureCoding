@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="qna">
+	<resultMap type="kr.co.bookking.VO.QnaVO" id="qnaMap">
+		<id column="QNA_ID" property="qnaId" />
+		<result column="QNA_USER_ID" property="qnaUserId" />
+		<result column="QNA_BOOK_ID" property="qnaBookId" />
+		<result column="QNA_TITLE" property="qnaTitle" />
+		<result column="QNA_CONTENTS" property="qnaContents" />
+		<result column="QNA_REGISTRATION_DATE" property="qnaRegistrationDate" />
+	</resultMap>
+
+	<select id="getQnaListByBookId" parameterType="int" resultMap="qnaMap">
+		select QNA_ID, QNA_USER_ID, QNA_BOOK_ID, QNA_TITLE, QNA_CONTENTS, QNA_REGISTRATION_DATE
+		from BK_QNA
+		where QNA_BOOK_ID = #{bookId}
+		order by QNA_ID DESC
+	</select>
+
+	<select id="getQnaContentByQnaId" parameterType="int" resultType="String">
+		select QNA_CONTENTS
+		from BK_QNA
+		where QNA_ID = #{qnaId}
+	</select>
+	
+	<!-- int qnaId, int qnaBookId, String qnaUserId, String qnaTitle, String qnaContent,
+			String qnaRegistrationDate -->
+	<insert id="insertQnaContent" parameterType="kr.co.bookking.VO.QnaVO">
+		insert into BK_QNA(QNA_USER_ID, QNA_BOOK_ID, QNA_TITLE, QNA_CONTENTS, QNA_REGISTRATION_DATE)
+		values( #{qnaUserId},
+				#{qnaBookId},
+				#{qnaTitle},
+				#{qnaContents},
+				now())
+	</insert>
+</mapper> 

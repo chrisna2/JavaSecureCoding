@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="book">
+	<resultMap type="kr.co.bookking.VO.BookVO" id="bookMap">
+		<id column="BOOK_ID" property="bookId" />
+		<result column="BOOK_CATEGORY_ID" property="bookCategoryId" />
+		<result column="BOOK_STOCK" property="bookStock" />
+		<result column="BOOK_PRICE" property="bookPrice" />
+		<result column="BOOK_HITS" property="bookHits" />
+		<result column="BOOK_SELLCOUNT" property="bookSellCount" />
+		<result column="BOOK_NAME" property="bookName" />
+		<result column="BOOK_WRITER" property="bookWriter" />
+		<result column="BOOK_PUBLISHER" property="bookPublisher" />
+		<result column="BOOK_CONTENTS" property="bookContents" />
+		<result column="BOOK_DETAIL_IMAGE" property="bookDetailImage" />
+		<result column="BOOK_LIST_IMAGE" property="bookListImage" />
+		<result column="BOOK_DATE" property="bookDate" />
+		<result column="BOOK_TRANSLATOR" property="bookTranslator" />
+	</resultMap>
+
+	<select id="selectBook" parameterType="int" resultMap="bookMap">
+		SELECT BOOK_ID, BOOK_CATEGORY_ID, BOOK_NAME, BOOK_STOCK, BOOK_PRICE,
+				BOOK_HITS, BOOK_SELLCOUNT, BOOK_WRITER, BOOK_PUBLISHER, BOOK_CONTENTS, BOOK_DETAIL_IMAGE,
+				BOOK_LIST_IMAGE,DATE_FORMAT(BOOK_DATE, '%Y-%m-%d') "bookDate", BOOK_TRANSLATOR
+		FROM BK_BOOK
+		WHERE BOOK_ID = #{bookId}
+	</select>
+	
+	<update id="updateCount" parameterType="int">
+		UPDATE BK_BOOK
+		SET BOOK_HITS = BOOK_HITS+1
+		WHERE BOOK_ID = #{bookId}
+	</update>
+	
+	
+	<select id="selectCommentList" parameterType="int" resultType="kr.co.bookking.VO.ProductCommentVO">
+		SELECT P_COMMENT_ID "pCommentId", 
+				P_COMMENT_USER_ID "pCommentUserId", 
+				P_COMMENT_LATTER_PART "pCommentLatterPart", 
+				P_COMMENT_POINT "pCommentPoint", 
+				DATE_FORMAT(P_COMMENT_REGISTRATION_DATE, '%Y-%m-%d') "pCommentRegistrationDate"		
+		FROM BK_PRODUCT_COMMENT
+		WHERE P_COMMENT_BOOK_ID = #{bookId}
+	    ORDER BY P_COMMENT_REGISTRATION_DATE DESC
+	</select>
+	
+	<select id="totalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM BK_PRODUCT_COMMENT
+		WHERE P_COMMENT_BOOK_ID = #{bookId}
+	</select>
+	
+	<select id="getBookListByCategoryId" parameterType="int" resultMap="bookMap">
+		SELECT BOOK_ID, BOOK_CATEGORY_ID, BOOK_NAME, BOOK_STOCK, BOOK_PRICE,
+				BOOK_HITS, BOOK_SELLCOUNT, BOOK_WRITER, BOOK_PUBLISHER, BOOK_CONTENTS, BOOK_DETAIL_IMAGE,
+				BOOK_LIST_IMAGE,DATE_FORMAT(BOOK_DATE, '%Y-%m-%d') "bookDate", BOOK_TRANSLATOR
+		FROM BK_BOOK
+		WHERE BOOK_CATEGORY_ID = #{categoryId}
+	</select>
+	
+	<select id="getBestBookList" resultMap="bookMap">
+			SELECT BOOK_NAME
+				, BOOK_PRICE
+				, BOOK_LIST_IMAGE
+				,BOOK_ID
+				, BOOK_HITS
+			FROM BK_BOOK
+			ORDER BY BOOK_HITS DESC
+			limit 6
+	</select>
+
+</mapper> 

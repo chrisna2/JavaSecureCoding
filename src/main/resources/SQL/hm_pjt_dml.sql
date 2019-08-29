@@ -1,0 +1,84 @@
+use ss;
+SELECT 
+    *
+FROM
+    BK_CATEGORY;
+
+SELECT 
+    *
+FROM
+    BK_BOOK;
+-- 책 카테고리 추가
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', '고전소설');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', '추리소설');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', '공포소설');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', '환타지소설');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', '라이트노벨');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', 'SF소설');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '소설', '로맨스소설');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '자기계발', '성공/처세');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '자기계발', '인간관계');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '자기계발', '자기능력계발');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '자기계발', '비즈니스능력계발');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '종교', '불교');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '종교', '카톨릭');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '종교', '기독교');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '종교', '그외종교');
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '만화', null);
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '전공서적', null);
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '시/에세이', null);
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '유아/청소년', null);
+
+INSERT INTO BK_CATEGORY
+VALUES (default, '외국어', null);
+
+-- 책 DB 추가
+INSERT INTO BK_BOOK(BOOK_ID, BOOK_CATEGORY_ID, BOOK_NAME, BOOK_WRITER, BOOK_STOCK, BOOK_PRICE, BOOK_CONTENTS, BOOK_PUBLISHER, BOOK_DETAIL_IMAGE, BOOK_LIST_IMAGE, BOOK_HITS, BOOK_DATE, BOOK_TRANSLATOR, BOOK_SELLCOUNT)
+VALUES (111, 1, '홍길동전', '허균', 15, 14000, '홍길동의 정의로운이야기', '민음사', 'images/home/hong.jpg', 'images/home/hong.jpg', 0, current_timestamp(), 'kalin', 0);
+
+commit;
+
+INSERT INTO BK_USER(USER_ID, USER_PASSWORD,USER_NAME, USER_CELLPHONE1,USER_CELLPHONE2,USER_CELLPHONE3,USER_ADDR1,USER_BIRTH,USER_SEX,USER_MILEAGE,USER_EMAIL,USER_ZIP,USER_ADDR2)
+VALUES('admin','admin','admin',000,000,000,'111',current_date(),000,000,'aaa',111,'1111'); 
+   
+
+-- 댓글 DB 추가
+INSERT INTO BK_PRODUCT_COMMENT(P_COMMENT_ID, P_COMMENT_BOOK_ID, P_COMMENT_USER_ID, P_COMMENT_LATTER_PART, P_COMMENT_POINT, P_COMMENT_RECOMMEND, P_COMMENT_NONRECOMMEND, P_COMMENT_REGISTRATION_DATE)
+VALUES(default, 111, 'admin', '최고의 책 원펀맨', 4, 0, 0, current_date());

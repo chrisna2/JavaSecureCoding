@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="order">
+<resultMap type="kr.co.bookking.VO.OrderVO" id="orderMap">
+	<result column="ORDER_ID" property="orderId"/>
+	<result column="ORDER_BOOK_ID" property="orderBookId"/>
+	<result column="ORDER_USER_ID" property="orderUserId"/>
+	<result column="ORDER_DATE" property="orderDate"/>
+	<result column="ORDER_ADDR1" property="orderAddr1"/>
+	<result column="ORDER_ADDR2" property="orderAddr2"/>
+	<result column="ORDER_CELLPHONE1" property="orderCellphone1"/>
+	<result column="ORDER_CELLPHONE2" property="orderCellphone2"/>
+	<result column="ORDER_CELLPHONE3" property="orderCellphone3"/>
+	<result column="ORDER_CONSIGNEE" property="orderConsingee"/>
+	<result column="ORDER_MEMO" property="orderMemo"/>
+	<result column="ORDER_TOTAL_PRICE" property="orderTotalPrice"/>
+	<result column="ORDER_PAYMENTKIND" property="orderPaymentKind"/>
+	<result column="ORDER_STOCK" property="orderStock"/>
+	<result column="ORDER_DISCOUNT" property="orderDiscount"/>
+	<result column="ORDER_DELIVERYCHARGE" property="orderDeliveryCharge"/>
+	<result column="ORDER_ZIP" property="orderZip"/>
+	<result column="ORDER_EMAIL" property="orderEmail"/>
+</resultMap>
+
+	<insert id="createOrder" parameterType="kr.co.bookking.VO.OrderVO">
+		INSERT INTO BK_ORDER (ORDER_ID, ORDER_USER_ID, ORDER_DATE, ORDER_ADDR1, ORDER_ADDR2, ORDER_CELLPHONE1,
+							ORDER_CELLPHONE2, ORDER_CELLPHONE3, ORDER_CONSIGNEE, ORDER_MEMO, ORDER_TOTAL_PRICE, ORDER_PAYMENTKIND,
+							ORDER_DELIVERYCHARGE, ORDER_ZIP, ORDER_EMAIL)
+		VALUES(ORDER_ID_SEQ.NEXTVAL, #{orderUserId}, now(), #{orderAddr1}, #{orderAddr2}, #{orderCellphone1},
+				#{orderCellphone2}, #{orderCellphone3}, #{orderConsingee}, #{orderMemo}, #{orderTotalPrice}, #{orderPaymentKind},
+				#{orderDeliveryCharge}, #{orderZip}, #{orderEmail})
+	</insert>
+	
+	<select id="getOrderList" parameterType="String" resultType="int">
+		SELECT ORDER_ID
+		FROM BK_ORDER
+		WHERE ORDER_USER_ID = #{orderUserId}
+		ORDER BY ORDER_ID DESC
+	</select>
+	<!-- 결제시 판매된 상품의 판매수량 update -->
+	<update id="updateSellCount" parameterType="kr.co.bookking.VO.BookVO">
+	<![CDATA[
+		UPDATE BK_BOOK
+	      SET BOOK_SELLCOUNT = BOOK_SELLCOUNT + #{bookStock}
+	 WHERE BOOK_ID = #{bookId}
+	 ]]>
+	</update>
+</mapper> 

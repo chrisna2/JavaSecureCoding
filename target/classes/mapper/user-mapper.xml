@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC   "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+
+<resultMap type="kr.co.bookking.VO.UserVO" id="userMap">
+	<result column="USER_ID" property="userId"/>
+	<result column="USER_PASSWORD" property="userPassword"/>
+	<result column="USER_NAME" property="userName"/>
+	<result column="USER_ADDR1" property="userAddr1"/>
+	<result column="USER_ADDR2" property="userAddr2"/>
+	<result column="USER_ZIP" property="userZip"/>
+	<result column="USER_EMAIL" property="userEmail"/>
+	<result column="USER_BIRTH" property="userBirth"/>
+	<result column="USER_CELLPHONE1" property="userCellphone1"/>
+	<result column="USER_CELLPHONE2" property="userCellphone2"/>
+	<result column="USER_CELLPHONE3" property="userCellphone3"/>
+	<result column="USER_SEX" property="userSex"/>
+	<result column="USER_MILEAGE" property="userMileage"/>
+</resultMap>
+
+	<insert id="signup" parameterType="kr.co.bookking.VO.UserVO">
+	INSERT INTO 
+							BK_USER (USER_ID	,USER_PASSWORD ,USER_NAME ,USER_CELLPHONE1 ,USER_CELLPHONE2 ,USER_CELLPHONE3
+							,USER_ADDR1 ,USER_SEX,USER_EMAIL ,USER_ZIP ,USER_ADDR2)
+			VALUES(
+							#{userId}
+							,#{userPassword}
+							,#{userName}
+							,#{userCellphone1}
+							,#{userCellphone2}
+							,#{userCellphone3}
+							,#{userAddr1}
+							,#{userSex}
+							,#{userEmail}
+							,#{userZip}
+							,#{userAddr2}
+			)
+	</insert>
+	
+	<select id="isDuplication" resultType="java.lang.String">
+		SELECT USER_ID
+		FROM BK_USER
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- ' or 'a' = 'a 가 로그인이 가능했던 이유, 문제는 '${}'였다...
+	<select id="login" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT USER_ID, USER_PASSWORD 
+		 FROM BK_USER
+		WHERE USER_ID = '${userId}'
+		   AND USER_PASSWORD = '${userPassword}'
+		   
+		'${userId}' -> prepareStatement 처리됨
+		#{userId} -> preapatedStatenment 처리됨
+	</select>
+	-->
+	
+	<select id="login" resultType="java.lang.String" parameterType="java.util.Map">
+		SELECT USER_ID, USER_PASSWORD 
+		 FROM BK_USER
+		WHERE USER_ID = #{userId}
+		   AND USER_PASSWORD = #{userPassword}
+	</select>
+	
+	<select id="getUserInfo" resultMap="userMap" parameterType="java.lang.String">
+		SELECT USER_ID, USER_ADDR2, USER_CELLPHONE1, USER_CELLPHONE2, USER_CELLPHONE3
+			   , USER_ADDR1, USER_SEX, USER_EMAIL, USER_ZIP, USER_NAME, USER_MILEAGE
+		FROM BK_USER
+		WHERE USER_ID = #{userId}
+	</select>
+	
+	<!-- "userId" : "${userId}",
+	"userCellphone1" : $('#mypageTable input[name=cellphone1]').val(),
+	"userCellphone2" : $('#mypageTable input[name=cellphone2]').val(),
+	"userCellphone3" : $('#mypageTable input[name=cellphone3]').val(),
+	"userEmail" : $('#mypageTable input[name=email]').val(),
+	"userZip" : $('#mypageTable input[name=userZip]').val(),
+	"userAddr1" : $('#mypageTable input[name=userAddr1]').val(),
+	"userAddr2" : $('#mypageTable input[name=userAddr2]').val(), -->
+	<update id="changeUserInfo" parameterType="kr.co.bookking.VO.UserVO">
+		UPDATE BK_USER
+		SET USER_CELLPHONE1 = #{userCellphone1},
+			USER_CELLPHONE2 = #{userCellphone2},
+			USER_CELLPHONE3 = #{userCellphone3},
+			USER_EMAIL = #{userEmail},
+			USER_ZIP = #{userZip},
+			USER_ADDR1 = #{userAddr1},
+			USER_ADDR2 = #{userAddr2}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<update id="changeUserPassword" parameterType="java.util.Map">
+		UPDATE BK_USER
+		SET USER_PASSWORD = #{checkAfterPW}
+		WHERE USER_ID = #{userId}
+	</update>
+	
+	<select id="getUserPassword" parameterType="java.lang.String" resultType="java.lang.String">
+		SELECT USER_PASSWORD
+		FROM BK_USER
+		WHERE USER_ID = #{userId}
+	</select>
+</mapper>

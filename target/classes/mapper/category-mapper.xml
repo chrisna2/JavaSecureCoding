@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC  
+ "-//mybatis.org//DTD Mapper 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ <mapper namespace="category">
+	<resultMap type="kr.co.bookking.VO.CategoryVO" id="categoryMap">
+		<id column="CATEGORY_ID" property="categoryId" />
+		<result column="CATEGORY_KIND1" property="categoryKind1" />
+		<result column="CATEGORY_KIND2" property="categoryKind2" />
+	</resultMap>
+
+	<select id="selectCategoryList" resultMap="categoryMap">
+		select CATEGORY_ID, CATEGORY_KIND1, CATEGORY_KIND2
+		from BK_CATEGORY
+		order by CATEGORY_ID
+	</select>
+
+</mapper> 
