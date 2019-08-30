@@ -1,3 +1,4 @@
+<%@page import="kr.co.bookking.util.CSRFTokenManager"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -26,7 +27,8 @@
 					"bookId" : "${bookId}",
 					"userId" : "${userId}",
 					"qnaTitle": $('#qnaPopupTitle').val(),
-					"qnaContent": $('#qnaPopupContent').val()
+					"qnaContent": $('#qnaPopupContent').val(),
+					"csrf" :  $('#csrf').val()
 				},
 				success: function(data){
 					opener.location.reload();
@@ -43,6 +45,7 @@
 </script>
 </head>
 <body id="qnaPopupBody">
+	<input type="hidden" id="csrf" value="<%= CSRFTokenManager.getTokenFromSession(session) %>">
 	<div id="PopupHeader">상품 Q&A 문의하기</div>
 	<table id="qnaPopupTable">
 		<tbody>

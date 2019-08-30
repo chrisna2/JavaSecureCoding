@@ -30,10 +30,16 @@
 	<!-- 인터셉터 등록 -->
 	<interceptors>
 		<interceptor>
- 		<mapping path="/order/books"/>
-		<mapping path="/cart/*"/>
-		<beans:bean class="kr.co.bookking.interceptor.UserCheckInterceptor"></beans:bean>
+	 		<mapping path="/order/books"/>
+			<mapping path="/cart/*"/>
+			<beans:bean class="kr.co.bookking.interceptor.UserCheckInterceptor"></beans:bean>
 		</interceptor>
+		
+		<interceptor>
+			<mapping path="/qna/register"/>
+			<beans:bean class="kr.co.bookking.interceptor.QnaInterseptor"></beans:bean>
+		</interceptor>
+		
 	</interceptors>
 	
 	 <!-- 스케쥴러파일이 존재하는 패키지 설정 -->
