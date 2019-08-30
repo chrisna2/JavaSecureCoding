@@ -41,4 +41,10 @@
     <filter-name>LoginFilter</filter-name>
     <url-pattern>/user/loginAction</url-pattern>
   </filter-mapping>
+  
+  <error-page>
+  	<error-code>500</error-code>
+  	<location>/bookking/resources/error500.jsp</location>
+  </error-page>
+  
 </web-app>

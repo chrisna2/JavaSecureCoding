@@ -216,6 +216,15 @@
 			<version>4.11</version>
 			<!-- <scope>test</scope> -->
 		</dependency>
+		
+		<!-- https://mvnrepository.com/artifact/com.navercorp.lucy/lucy-xss -->
+		<dependency>
+		    <groupId>com.navercorp.lucy</groupId>
+		    <artifactId>lucy-xss</artifactId>
+		    <version>1.6.3</version>
+		</dependency>
+			
+	
 	</dependencies>
 	<build>
 		<plugins>

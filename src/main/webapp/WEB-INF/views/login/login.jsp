@@ -85,6 +85,7 @@
 
 	/* 유효성검사*/
 	function userValidation() {
+		
 		var userName = $("#userName").val();
 		var userId = $("#userId").val();
 		var userPw1 = $("#userPw1").val();
@@ -142,12 +143,27 @@
 			alert("전화번호를 입력 하세요.");
 			$("#userCellphone3").focus();
 			return false;
-		}else{
+		}
+
+		var myCheck = new RegExp('(?=.[!@#\$%\^&])');
+
+		if(!myCheck.test($("#userPw1").val())){
+			alert("1개 이상의 특수문자를 삽입하세여");
+			$("#userPw1").focus();
+			return false;
+		}
+
+
+			
 			var result =  $("form[id=userForm]").serialize();
+
+			alert(result);
+			
+
 			$.ajax({
 				type: "get"
 				,url: "/bookking/user/userSignup"
-				,contentType: "application/json; charset=utf-8"
+				,contentType: "application/json;charset=utf-8"
 				,dataType:"json"
 				,data : result
 				,success : function(data){
@@ -164,7 +180,7 @@
 				}
 			});
 			
-		}
+
 		
 		
 
@@ -280,7 +296,7 @@
 							<input type="text"    placeholder="UserId" style="width: 80%" id="userId" name="userId"/> 
 							<div id="duplication"></div>
 							<input type="password" placeholder="Password" style="width: 80%" id="userPw1" name="userPassword"/><br>
-							<input type="password" placeholder="Password" style="width: 80%" id="userPw2" name="userPw2"/><br>
+							<input type="password" placeholder="Password" style="width: 80%" id="userPw2" /><br>
 							<div id="pwDuplication"></div>
 							<input type="email" placeholder="Email Address" style="width: 80%" id="userEmail" name="userEmail"/><br>
 							

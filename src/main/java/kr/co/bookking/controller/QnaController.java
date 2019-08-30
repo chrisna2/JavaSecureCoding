@@ -32,7 +32,9 @@ public class QnaController {
 	
 	@RequestMapping(value="/popup", method = RequestMethod.GET)
 	public String getQnaForm(HttpServletRequest request, String bookId, String userId, Model model) throws Exception {
+		
 		logger.info("bookId: " + bookId + "  userId: " + userId);
+		
 		model.addAttribute("bookId",bookId);
 		model.addAttribute("userId",userId);
 		

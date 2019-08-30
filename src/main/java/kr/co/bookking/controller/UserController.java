@@ -1,8 +1,6 @@
 package kr.co.bookking.controller;
 
 
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -17,20 +15,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.bookking.VO.CategoryVO;
-import kr.co.bookking.VO.OrderGoodsVO;
 import kr.co.bookking.VO.UserVO;
-import kr.co.bookking.service.BookService;
 import kr.co.bookking.service.CategoryService;
 import kr.co.bookking.service.OrderGoodsService;
 import kr.co.bookking.service.OrderService;
 import kr.co.bookking.service.UserService;
+import kr.co.bookking.util.EncryptUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -62,7 +57,10 @@ public class UserController {
 		public @ResponseBody String login(HttpServletResponse response, HttpServletRequest request, Model model, String loginId, String loginPw) throws Exception{
 			String result = null;
 			try {
-				result = userService.login(loginId, loginPw);
+				
+				String EncodePw = EncryptUtil.encryptPwd(loginPw);
+				
+				result = userService.login(loginId, EncodePw);
 				System.out.println(result);
 				if(result != null){
 					HttpSession session = request.getSession();
@@ -96,8 +94,15 @@ public class UserController {
 		/*회원가입*/
 		@RequestMapping(value="/userSignup", method =RequestMethod.GET)
 		public @ResponseBody int signup(Model model, UserVO user, HttpServletResponse response, HttpServletRequest request) throws Exception{
+			
+			System.out.println(user.toString());
+			String ecrypt = EncryptUtil.encryptPwd(user.getUserPassword());
+			System.out.println(ecrypt);
+			user.setUserPassword(ecrypt);
+			
+			
 			int result = userService.signup(user);
-		return result;
+			return result;
 		}
 		
 		/*아이디 중복확인*/
